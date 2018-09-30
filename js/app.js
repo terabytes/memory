@@ -36,3 +36,69 @@ function shuffle(array) {
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
+let cards = document.querySelectorAll('.card');
+let prevCard = null;
+let matchesLeft = 8;
+let moves = 0;
+
+cards.forEach(card => {
+    card.addEventListener('click', (e) => {
+        console.log('matches left', matchesLeft);
+        console.log('prev', prevCard);
+        console.log('curr', card);
+        if(card.classList.contains('match') || card === prevCard) {
+            return;
+        } else if(prevCard === null) {
+            card.classList.add('open', 'show');
+            prevCard = card;
+        } else {
+            let symbol = card.firstElementChild.classList[1];
+            let prevSymbol = prevCard ? prevCard.firstElementChild.classList[1] : '';
+
+            if(symbol === prevSymbol) {
+                showCardsMatch(prevCard, card);
+            } else {
+                showCardsDoNotMatch(prevCard, card);
+            }         
+        }
+    })
+});
+
+const showCardsMatch = (prev, curr) => {
+    prev.classList.remove('open', 'show');
+    curr.classList.add('match', 'animated', 'tada');
+    prev.classList.add('match', 'animated', 'tada');
+
+    updateMoves();
+    matchesLeft--;
+    prevCard = null;
+
+    setTimeout(function(){
+        curr.classList.remove('animated', 'tada');
+        prev.classList.remove('animated', 'tada');
+
+        if(matchesLeft === 0) {
+            alert(`Congratulations, you won in ${moves} moves!`);
+        }
+    },500); // for 1s = 1000ms
+};
+
+const showCardsDoNotMatch = (prev, curr) => {
+    prev.classList.remove('open', 'show');
+    curr.classList.add('no-match', 'animated', 'wobble');
+    prev.classList.add('no-match', 'animated', 'wobble');
+    
+    updateMoves();
+    prevCard = null;
+
+    setTimeout(function(){
+        curr.classList.remove('no-match', 'animated', 'wobble');
+        prev.classList.remove('no-match', 'animated', 'wobble');
+    },500); // for 1s = 1000ms
+};
+
+// Increase # of moves and update its display value
+const updateMoves = () => {
+    moves++;
+    document.querySelectorAll('.moves')[0].textContent = moves;
+}
