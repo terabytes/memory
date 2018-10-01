@@ -85,7 +85,6 @@ const openCardsAsMatched = (prev, curr) => {
         prev.classList.remove('animated', 'tada');
 
         if(opened.length === 16) {
-            console.log(opened.length);
             alert(`Congratulations, you won in ${moves} moves in ${seconds} seconds!`);
         }
     },500); // for 1s = 1000ms
