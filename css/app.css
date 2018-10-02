@@ -113,3 +113,12 @@ h1 {
     float: right;
     cursor: pointer;
 }
+
+/*
+ * Styles for the Timer Panel
+ */
+ .timer-panel {
+    text-align: left;
+    width: 345px;
+    margin-bottom: 10px;
+}

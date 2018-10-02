@@ -78,6 +78,10 @@ const checkCard = (card) => {
     } 
 }
 
+const isGameOver = () => {
+    return opened.length === 16;
+};
+
 /*
  * Determine if no cards have been opened
  */
@@ -110,10 +114,10 @@ const openCardsAsMatched = (prev, curr) => {
     setTimeout(function(){
         curr.classList.remove('animated', 'tada');
         prev.classList.remove('animated', 'tada');
-
-        if(opened.length === 16) {
-            clearInterval(timer);
-            alert(`Congratulations, you won in ${moves} moves in ${seconds} seconds! You have ${getStars()} ⭐s!`);
+        if(isGameOver()) {
+            alert(`Congratulations, you won in ${moves} moves in ${seconds} seconds!` +
+            ` You have ${getStars()} star(s)! ${getStarDisplay(getStars())}`);
+            resetTimer();
         }
     },500); // for 1s = 1000ms
 
@@ -149,6 +153,13 @@ const setMoves = (m) => {
 }
 
 /*
+ * Gets # of seconds elapsed
+ */
+const getSeconds = () => {
+    return seconds;
+}
+
+/*
  * Updates # of seconds elapsed
  */
 const setSeconds = (s) => {
@@ -165,7 +176,7 @@ const updateMovesDisplay = () => {
 /*
  * Updates # of seconds displayed
  */
-const updateTimer = () => {
+const updateTimerDisplay = () => {
     document.querySelectorAll('.seconds')[0].textContent = seconds;
 }
 
@@ -183,6 +194,16 @@ const getStars = () => {
     return (moves < 16) ? 3 : (moves < 22) ? 2 : 1;
 }
 
+/*
+ * Formats text representation of star rating
+ */
+const getStarDisplay = (stars) => {
+    return (stars === 3) ? `⭐⭐⭐` : (stars === 2) ? `⭐⭐` : `⭐`;
+}
+
+/*
+ * Updates star display
+ */
 const setStars = (starCount) => {
     let stars = document.querySelectorAll('.stars')[0].children;
     if (starCount === 3) {
@@ -231,6 +252,37 @@ const shuffle = (array) => {
 }
 
 /*
+ * Increment # of seconds every second
+ */
+const counter = () => {
+    setSeconds(getSeconds() + 1);
+    updateTimerDisplay();
+}
+
+/*
+ * Stores unique id of timer
+ */
+var timerId;
+
+/*
+ * Starts timer, inspired by: https://medium.com/@jenniferfadriquela/helper-function-for-setinterval-ebbe2341123e
+ */
+const startTimer = () => {
+    timerId = setInterval(() => {
+        if(!isGameOver()) {
+            counter();
+        }
+    }, 1000);
+}
+
+/*
+ * Resets timer, function from: https://hackernoon.com/handling-time-intervals-in-javascript-83dc70cbfe05
+ */
+const resetTimer = () => {
+    clearInterval(timerId);
+}
+
+/*
  * Resets game
  */
 const restartGame = () => {
@@ -245,6 +297,8 @@ const restartGame = () => {
     updateMovesDisplay();
     setStars(3);
     setSeconds(0);
+    updateTimerDisplay();
+    startTimer();
 }
 
 /*
@@ -271,11 +325,4 @@ cards.forEach(card => {
     })
 });
 
-/*
- * Increments # of seconds every second
- */
-let timer = setInterval(() => {
-    seconds++;
-    updateTimer();
-}, 1000);
 
