@@ -20,4 +20,8 @@ This project uses HTML, CSS, JS, Font Awesome, animate.css, and Google Fonts
 * Event listeners to detect click events
 * DOM manipulation
 
+## Getting Started
+
+To get started on this project, begin by opening the `index.html` file to understand the structure of the page. Most, if not all, of the game logic resides in `js/app.js`.
+
 
