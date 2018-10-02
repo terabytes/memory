@@ -4,9 +4,9 @@
 
 * [Description](#description)
 * [Dependencies](#dependencies)
-* [Tetchnical Feats](#technicalfeats)
+* [Technical Feats](#technicalfeats)
 
-## Instructions
+## Description
 
 This is a browser-based card matching game (sometimes known as Concentration) that tests your memory recall by using a timer, move counter, and star rating.
 
