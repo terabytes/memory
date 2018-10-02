@@ -27,16 +27,12 @@ let cardSymbols = [
     'fa-cube'
 ];
 
-/*
- * Restart the game on click
- */
+// Restart the game on click
 restart.addEventListener('click', () => {
     restartGame();
 });
 
-/*
- * Flip the card open
- */
+// Flip the card open
 const openCard = (card) => {
     card.classList.add('open', 'show');
 }
@@ -78,34 +74,27 @@ const checkCard = (card) => {
     } 
 }
 
+// Determine if game is over
 const isGameOver = () => {
     return opened.length === 16;
 };
 
-/*
- * Determine if no cards have been opened
- */
+// Determine if no cards have been opened
 const isEmpty = () => {
     return opened.length === 0;
 }
 
-/*
- * Mark a card as opened if it is first of a pair in play or matched
- */
+// Mark a card as opened if it is first of a pair in play or matched
 const markAsOpened = (card) => {
     opened.push(card);
 }
 
-/*
- * Mark a card as closed if it is not matched
- */
+// Mark a card as closed if it is not matched
 const markAsClosed = () => {
     opened.pop();
 }
 
-/*
- * Mark a pair of cards as matching
- */
+// Mark a pair of cards as matching
 const openCardsAsMatched = (prev, curr) => {
     prev.classList.remove('open', 'show');
     curr.classList.add('match', 'animated', 'tada');
@@ -125,9 +114,7 @@ const openCardsAsMatched = (prev, curr) => {
     updateStars();
 };
 
-/*
- * Mark a pair of cards as not matching
- */
+// Mark a pair of cards as not matching
 const openCardsAsUnmatched = (prev, curr) => {
     prev.classList.remove('open', 'show');
     curr.classList.add('no-match', 'animated', 'wobble');
@@ -143,66 +130,48 @@ const openCardsAsUnmatched = (prev, curr) => {
     updateStars();
 };
 
-/*
- * Updates # of moves played
- */
+// Updates # of moves played
 const setMoves = (m) => {
     moves = m;
     
 }
 
-/*
- * Gets # of seconds elapsed
- */
+// Gets # of seconds elapsed
 const getSeconds = () => {
     return seconds;
 }
 
-/*
- * Updates # of seconds elapsed
- */
+// Updates # of seconds elapsed
 const setSeconds = (s) => {
     seconds = s;
 }
 
-/*
- * Updates # of moves displayed
- */
+// Updates # of moves displayed
 const updateMovesDisplay = () => {
     document.querySelectorAll('.moves')[0].textContent = moves;
 }
 
-/*
- * Updates # of seconds displayed
- */
+// Updates # of seconds displayed
 const updateTimerDisplay = () => {
     document.querySelectorAll('.seconds')[0].textContent = seconds;
 }
 
-/*
- * Updates star rating based on # of moves
- */
+// Updates star rating based on # of moves
 const updateStars = () => {
     setStars(getStars());
 }
 
-/*
- * Determines star rating based on # of moves
- */
+// Determines star rating based on # of moves
 const getStars = () => {
     return (moves < 16) ? 3 : (moves < 22) ? 2 : 1;
 }
 
-/*
- * Formats text representation of star rating
- */
+// Formats text representation of star rating
 const getStarDisplay = (stars) => {
     return (stars === 3) ? `⭐⭐⭐` : (stars === 2) ? `⭐⭐` : `⭐`;
 }
 
-/*
- * Updates star display
- */
+// Updates star display
 const setStars = (starCount) => {
     let stars = document.querySelectorAll('.stars')[0].children;
     if (starCount === 3) {
@@ -219,17 +188,13 @@ const setStars = (starCount) => {
     }
 }
 
-/*
- * Updates star to make it solid
- */
+// Updates star to make it solid
 const addSolidStar = (star) => {
     star.add('fa-star');
     star.remove('fa-star-o');
 }
 
-/*
- * Updates star to make it empty
- */
+// Updates star to make it empty
 const removeSolidStar = (star) => {
     star.add('fa-star-o');
     star.remove('fa-star');
@@ -250,22 +215,16 @@ const shuffle = (array) => {
     return array;
 }
 
-/*
- * Increment # of seconds every second
- */
+// Increment # of seconds every second
 const counter = () => {
     setSeconds(getSeconds() + 1);
     updateTimerDisplay();
 }
 
-/*
- * Stores unique id of timer
- */
+// Stores unique id of timer
 let timerId;
 
-/*
- * Starts timer, inspired by: https://medium.com/@jenniferfadriquela/helper-function-for-setinterval-ebbe2341123e
- */
+// Starts timer, inspired by: https://medium.com/@jenniferfadriquela/helper-function-for-setinterval-ebbe2341123e
 const startTimer = () => {
     timerId = setInterval(() => {
         if(!isGameOver()) {
@@ -274,16 +233,12 @@ const startTimer = () => {
     }, 1000);
 }
 
-/*
- * Resets timer, function from: https://hackernoon.com/handling-time-intervals-in-javascript-83dc70cbfe05
- */
+// Resets timer, function from: https://hackernoon.com/handling-time-intervals-in-javascript-83dc70cbfe05
 const resetTimer = () => {
     clearInterval(timerId);
 }
 
-/*
- * Resets game
- */
+// Resets game
 const restartGame = () => {
     opened = [];
     cardSymbols = shuffle(cardSymbols);
