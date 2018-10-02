@@ -117,7 +117,6 @@ const openCardsAsMatched = (prev, curr) => {
         if(isGameOver()) {
             alert(`Congratulations, you won in ${moves} moves in ${seconds} seconds!` +
             ` You have ${getStars()} star(s)! ${getStarDisplay(getStars())}`);
-            resetTimer();
         }
     },500); // for 1s = 1000ms
 
@@ -262,7 +261,7 @@ const counter = () => {
 /*
  * Stores unique id of timer
  */
-var timerId;
+let timerId;
 
 /*
  * Starts timer, inspired by: https://medium.com/@jenniferfadriquela/helper-function-for-setinterval-ebbe2341123e
@@ -298,6 +297,7 @@ const restartGame = () => {
     setStars(3);
     setSeconds(0);
     updateTimerDisplay();
+    resetTimer();
     startTimer();
 }
 
