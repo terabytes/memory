@@ -27,14 +27,29 @@ let cardSymbols = [
     'fa-cube'
 ];
 
+/*
+ * Restart the game on click
+ */
 restart.addEventListener('click', () => {
     restartGame();
 });
 
+/*
+ * Flip the card open
+ */
 const openCard = (card) => {
     card.classList.add('open', 'show');
 }
 
+/*
+ * Check the card on click
+ * - see if it's the first card. if it is, open it.
+ * - you cannot open a card already matched
+ * - if no card has been opened for this pair yet, open it
+ * - you cannot open a card previously opened
+ * - if the card is a match, mark it as matched
+ * - otherwise mark it as unmatched
+ */
 const checkCard = (card) => {
     if(isEmpty()) {
         openCard(card);
@@ -63,18 +78,30 @@ const checkCard = (card) => {
     } 
 }
 
+/*
+ * Determine if no cards have been opened
+ */
 const isEmpty = () => {
     return opened.length === 0;
 }
 
+/*
+ * Mark a card as opened if it is first of a pair in play or matched
+ */
 const markAsOpened = (card) => {
     opened.push(card);
 }
 
+/*
+ * Mark a card as closed if it is not matched
+ */
 const markAsClosed = () => {
     opened.pop();
 }
 
+/*
+ * Mark a pair of cards as matching
+ */
 const openCardsAsMatched = (prev, curr) => {
     prev.classList.remove('open', 'show');
     curr.classList.add('match', 'animated', 'tada');
@@ -85,7 +112,8 @@ const openCardsAsMatched = (prev, curr) => {
         prev.classList.remove('animated', 'tada');
 
         if(opened.length === 16) {
-            alert(`Congratulations, you won in ${moves} moves in ${seconds} seconds!`);
+            clearInterval(timer);
+            alert(`Congratulations, you won in ${moves} moves in ${seconds} seconds! You have ${getStars()} ⭐s!`);
         }
     },500); // for 1s = 1000ms
 
@@ -94,6 +122,9 @@ const openCardsAsMatched = (prev, curr) => {
     updateStars();
 };
 
+/*
+ * Mark a pair of cards as not matching
+ */
 const openCardsAsUnmatched = (prev, curr) => {
     prev.classList.remove('open', 'show');
     curr.classList.add('no-match', 'animated', 'wobble');
@@ -109,32 +140,47 @@ const openCardsAsUnmatched = (prev, curr) => {
     updateStars();
 };
 
-// Sets # of moves played
+/*
+ * Updates # of moves played
+ */
 const setMoves = (m) => {
     moves = m;
     
 }
 
+/*
+ * Updates # of seconds elapsed
+ */
 const setSeconds = (s) => {
     seconds = s;
 }
 
+/*
+ * Updates # of moves displayed
+ */
 const updateMovesDisplay = () => {
     document.querySelectorAll('.moves')[0].textContent = moves;
 }
 
+/*
+ * Updates # of seconds displayed
+ */
+const updateTimer = () => {
+    document.querySelectorAll('.seconds')[0].textContent = seconds;
+}
+
+/*
+ * Updates star rating based on # of moves
+ */
 const updateStars = () => {
-    if(moves === 16) {
-        setStars(2);
-    }
+    setStars(getStars());
+}
 
-    if(moves === 22) {
-        setStars(1);
-    }
-
-    if(moves === 30) {
-        setStars(0);
-    }
+/*
+ * Determines star rating based on # of moves
+ */
+const getStars = () => {
+    return (moves < 16) ? 3 : (moves < 22) ? 2 : 1;
 }
 
 const setStars = (starCount) => {
@@ -147,20 +193,23 @@ const setStars = (starCount) => {
     else if (starCount === 2) {
         let thirdStar = stars[2].firstChild.classList;
         removeSolidStar(thirdStar); 
-    } else if (starCount == 1){
+    } else {
         let secondStar = stars[1].firstChild.classList;
         removeSolidStar(secondStar);
-    } else {
-        let thirdStar = stars[0].firstChild.classList;
-        removeSolidStar(thirdStar);
     }
 }
 
+/*
+ * Updates star to make it solid
+ */
 const addSolidStar = (star) => {
     star.add('fa-star');
     star.remove('fa-star-o');
 }
 
+/*
+ * Updates star to make it empty
+ */
 const removeSolidStar = (star) => {
     star.add('fa-star-o');
     star.remove('fa-star');
@@ -181,6 +230,9 @@ const shuffle = (array) => {
     return array;
 }
 
+/*
+ * Resets game
+ */
 const restartGame = () => {
     opened = [];
     cardSymbols = shuffle(cardSymbols);
@@ -219,7 +271,11 @@ cards.forEach(card => {
     })
 });
 
-setInterval(() => {
+/*
+ * Increments # of seconds every second
+ */
+let timer = setInterval(() => {
     seconds++;
+    updateTimer();
 }, 1000);
 
