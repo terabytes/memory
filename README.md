@@ -4,7 +4,7 @@
 
 * [Description](#description)
 * [Dependencies](#dependencies)
-* [Technical Feats](#technical_feats)
+* [Technical Feats](#technical-feats)
 
 ## Description
 
